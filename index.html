@@ -1,90 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> Bookmark</title>
-    <link rel="icon" href="Image/bookmark_2698202.png">
+    <meta
+      name="description"
+      content="Bookmark your favorite sites and keep them one click away."
+    />
+    <meta name="theme-color" content="#f7ecde" />
+    <title>Bookmark &mdash; Save your favorite sites</title>
+    <link rel="icon" href="Image/bookmark_2698202.png" />
     <link rel="stylesheet" href="Css/all.min.css" />
     <link rel="stylesheet" href="Css/bootstrap.min.css" />
     <link rel="stylesheet" href="Css/style.css" />
   </head>
   <body>
-   
-   <main class="py-5 position-relativ">
-   <div class="container d-flex flex-column justify-content-center align-items-center">
-    <h1 class="py-2 position-relative">bookmark</h1>
-     <div class="bookmark-body w-100 p-3 py-4 mt-5 d-flex flex-column justify-content-center align-items-center gap-4">
-      <h2> <i class="fa-solid fa-bookmark"></i>
-        Bookmark your favorite sites
-        <i class="fa-solid fa-bookmark"></i>
-      </h2>
-        <div class="name-site w-100 d-flex flex-column justify-content-center">
-            <label for="bookmarkName" class="pb-2 fw-semibold">
-              <i class="fa-solid fa-book-bookmark pe-2"></i>
-              Site Name</label>
-              <input type="text" placeholder="bookmark Name" class="form-control" id="bookmarkName">
-        </div>
-        <div class="url-site w-100 d-flex flex-column justify-content-center">
-            <label for="bookmarkURL" class="pb-2 fw-semibold">
-              <i class="fa-solid fa-link pe-2"></i>
-              Site URL</label>
-              <input type="text" placeholder="Website URL" class="form-control" id="bookmarkURL">
-        </div>
-        <button class="btn btn-submit btn-danger px-5" id="submitBtn">Submit</button>
-     </div>
-     <table class="table mt-4 text-center bg-light">
-      <thead>
-        <tr>
-          <th class="text-capitalize">Index</th>
-          <th class="text-capitalize">Website Name</th>
-          <th class="text-capitalize">Visit</th>
-          <th class="text-capitalize">Delete</th>
-        </tr>
-      </thead>
-      <tbody id="tableContent">
-        <!-- <tr>
-          <td>1</td>
-          <td>Abeer</td>              
-          <td>
-            <button class="btn btn-visit" data-index="0">
-              <i class="fa-solid fa-eye pe-2"></i>Visit
-            </button>
-          </td>
-          <td>
-            <button class="btn btn-delete pe-2" data-index="0">
-              <i class="fa-solid fa-trash-can"></i>
-              Delete
-            </button>
-          </td>
-      </tr> -->
-      </tbody>
+    <a class="skip-link" href="#bookmarkForm">Skip to the bookmark form</a>
 
-     </table>
-   </div>
-   <div class="box-info position-absolute start-0 top-0 w-100 h-100 d-flex justify-content-center align-items-center d-non">
-     <div class="content-box bg-white p-4 rounded-2 shadow-lg">
-    <header class="header-box w-100 d-flex justify-content-between align-items-center mb-4">
-      <div class="circles d-flex ">
-        <span class="rounded-circle me-2"></span>
-        <span class="rounded-circle me-2"></span>
-        <span class="rounded-circle me-2"></span>
+    <main class="py-5 position-relative">
+      <div class="container d-flex flex-column justify-content-center align-items-center">
+        <button
+          type="button"
+          class="btn theme-toggle"
+          id="themeToggle"
+          aria-label="Switch to dark theme"
+          title="Switch theme"
+        >
+          <i class="fa-solid fa-moon" aria-hidden="true"></i>
+        </button>
+
+        <h1 class="py-2 position-relative">bookmark</h1>
+
+        <!-- ============ Add bookmark form ============ -->
+        <form
+          class="bookmark-body w-100 p-3 py-4 mt-5 d-flex flex-column justify-content-center align-items-center gap-4"
+          id="bookmarkForm"
+          novalidate
+        >
+          <h2>
+            <i class="fa-solid fa-bookmark" aria-hidden="true"></i>
+            Bookmark your favorite sites
+            <i class="fa-solid fa-bookmark" aria-hidden="true"></i>
+          </h2>
+
+          <div class="name-site w-100 d-flex flex-column justify-content-center">
+            <label for="bookmarkName" class="pb-2 fw-semibold">
+              <i class="fa-solid fa-book-bookmark pe-2" aria-hidden="true"></i>
+              Site Name
+            </label>
+            <input
+              type="text"
+              placeholder="bookmark Name"
+              class="form-control"
+              id="bookmarkName"
+              name="bookmarkName"
+              autocomplete="off"
+              spellcheck="false"
+              aria-describedby="bookmarkNameHelp"
+            />
+            <p class="field-hint m-0 pt-2" id="bookmarkNameHelp">
+              At least 3 characters, letters and numbers.
+            </p>
+          </div>
+
+          <div class="url-site w-100 d-flex flex-column justify-content-center">
+            <label for="bookmarkURL" class="pb-2 fw-semibold">
+              <i class="fa-solid fa-link pe-2" aria-hidden="true"></i>
+              Site URL
+            </label>
+            <input
+              type="text"
+              placeholder="Website URL"
+              class="form-control"
+              id="bookmarkURL"
+              name="bookmarkURL"
+              inputmode="url"
+              autocomplete="off"
+              spellcheck="false"
+              aria-describedby="bookmarkURLHelp"
+            />
+            <p class="field-hint m-0 pt-2" id="bookmarkURLHelp">
+              For example: example.com or https://example.com
+            </p>
+          </div>
+
+          <button class="btn btn-submit btn-danger px-5" id="submitBtn" type="submit">
+            <i class="fa-solid fa-plus pe-2" aria-hidden="true"></i>Submit
+          </button>
+        </form>
+
+        <!-- ============ Saved bookmarks ============ -->
+        <section class="bookmarks-panel w-100 mt-5" aria-labelledby="bookmarksHeading">
+          <div
+            class="panel-head d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3"
+          >
+            <h3 class="m-0 d-flex align-items-center gap-2" id="bookmarksHeading">
+              <i class="fa-solid fa-list" aria-hidden="true"></i>
+              Saved sites
+              <span class="badge count-badge" id="bookmarkCount">0</span>
+            </h3>
+
+            <div class="search-wrap position-relative">
+              <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+              <label class="visually-hidden" for="searchInput">Search bookmarks</label>
+              <input
+                type="search"
+                class="form-control search-input"
+                id="searchInput"
+                placeholder="Search by name or URL"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table mt-0 text-center bg-light align-middle">
+              <caption class="visually-hidden">
+                List of your saved bookmarks
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" class="text-capitalize">Index</th>
+                  <th scope="col" class="text-capitalize">Website Name</th>
+                  <th scope="col" class="text-capitalize">Visit</th>
+                  <th scope="col" class="text-capitalize">Delete</th>
+                </tr>
+              </thead>
+              <tbody id="tableContent"></tbody>
+            </table>
+          </div>
+
+          <!-- Shown when there is nothing to list -->
+          <div class="empty-state text-center p-5 d-none" id="emptyState">
+            <i class="fa-regular fa-bookmark d-block mb-3" aria-hidden="true"></i>
+            <p class="m-0 fw-semibold" id="emptyTitle">No bookmarks yet</p>
+            <p class="m-0 empty-hint" id="emptyHint">
+              Add your first site using the form above.
+            </p>
+          </div>
+        </section>
       </div>
-      <button class="btn border-0" id="closeBtn"><i class="fa-solid fa-xmark close fs-3"></i></button>
-    </header>
-    <p class="m-0 pb-2">Site Name or Url is not valid, Please follow the rules below :</p>
-    <ol class="rules list-unstyled m-0">
-      <li>
-        <i class="fa-regular fa-circle-right p-2"></i>Site name must
-        contain at least 3 characters
-      </li>
-      <li>
-        <i class="fa-regular fa-circle-right p-2"></i>Site URL must be a valid one
-      </li>
-    </ol>
-     </div>
-   </div>
-   </main>
+
+      <!-- ============ Validation rules dialog ============ -->
+      <div
+        class="box-info position-absolute start-0 top-0 w-100 h-100 d-flex justify-content-center align-items-center d-none"
+        id="boxInfo"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="boxInfoTitle"
+        aria-hidden="true"
+      >
+        <div class="content-box bg-white p-4 rounded-2 shadow-lg">
+          <header
+            class="header-box w-100 d-flex justify-content-between align-items-center mb-4"
+          >
+            <div class="circles d-flex" aria-hidden="true">
+              <span class="rounded-circle me-2"></span>
+              <span class="rounded-circle me-2"></span>
+              <span class="rounded-circle me-2"></span>
+            </div>
+            <button
+              type="button"
+              class="btn border-0"
+              id="closeBtn"
+              aria-label="Close the dialog"
+            >
+              <i class="fa-solid fa-xmark close fs-3" aria-hidden="true"></i>
+            </button>
+          </header>
+          <p class="m-0 pb-2" id="boxInfoTitle">
+            Site Name or Url is not valid, Please follow the rules below :
+          </p>
+          <ol class="rules list-unstyled m-0">
+            <li>
+              <i class="fa-regular fa-circle-right p-2" aria-hidden="true"></i>Site name
+              must contain at least 3 characters
+            </li>
+            <li>
+              <i class="fa-regular fa-circle-right p-2" aria-hidden="true"></i>Site URL
+              must be a valid one
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ============ Delete confirmation dialog ============ -->
+      <div
+        class="box-info position-absolute start-0 top-0 w-100 h-100 d-flex justify-content-center align-items-center d-none"
+        id="confirmBox"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="confirmTitle"
+        aria-hidden="true"
+      >
+        <div class="content-box bg-white p-4 rounded-2 shadow-lg">
+          <header
+            class="header-box w-100 d-flex justify-content-between align-items-center mb-4"
+          >
+            <div class="circles d-flex" aria-hidden="true">
+              <span class="rounded-circle me-2"></span>
+              <span class="rounded-circle me-2"></span>
+              <span class="rounded-circle me-2"></span>
+            </div>
+            <button
+              type="button"
+              class="btn border-0"
+              id="confirmCloseBtn"
+              aria-label="Close the dialog"
+            >
+              <i class="fa-solid fa-xmark close fs-3" aria-hidden="true"></i>
+            </button>
+          </header>
+          <p class="m-0 pb-2" id="confirmTitle">
+            Delete <span class="confirm-name" id="confirmName"></span> from your
+            bookmarks?
+          </p>
+          <div class="d-flex justify-content-end gap-2 pt-3">
+            <button type="button" class="btn btn-cancel px-4" id="cancelDeleteBtn">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-delete px-4" id="confirmDeleteBtn">
+              <i class="fa-solid fa-trash-can pe-2" aria-hidden="true"></i>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ Live feedback messages ============ -->
+      <div class="toast-stack" id="toastStack" role="status" aria-live="polite"></div>
+    </main>
 
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/index.js"></script>
